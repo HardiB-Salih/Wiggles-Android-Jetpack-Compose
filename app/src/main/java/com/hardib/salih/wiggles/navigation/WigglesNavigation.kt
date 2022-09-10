@@ -27,7 +27,8 @@ fun WigglesNavigation (toggleTheme: () -> Unit) {
         }
 
         composable(WigglesScreen.DetailScreen.name){
-            Details(navController = navController, sharedViewModel = sharedViewModel)
+            Details(navController = navController,
+                sharedViewModel = sharedViewModel)
         }
 
     }

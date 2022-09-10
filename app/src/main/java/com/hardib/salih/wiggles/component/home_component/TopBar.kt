@@ -6,12 +6,17 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.hardib.salih.wiggles.R
 import com.hardib.salih.wiggles.services.HelperObject
+import com.hardib.salih.wiggles.services.SharedPrefDataStore
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 @Composable
 fun TopBar(onToggle: () -> Unit) {
@@ -42,7 +47,10 @@ fun TopBar(onToggle: () -> Unit) {
 
 @Composable
 fun WigglesThemeSwitch(onToggle: () -> Unit) {
-    val icon = if (HelperObject.isDark.value)
+    val dataStore = SharedPrefDataStore(LocalContext.current)
+    val initialBool = runBlocking { dataStore.getIsDark.first() }
+    val isDark = dataStore.getIsDark.collectAsState(initial = initialBool)
+    val icon = if (isDark.value)
         painterResource(id = R.drawable.ic_light_off)
     else
         painterResource(id = R.drawable.ic_light_on)
